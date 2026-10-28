@@ -1,23 +1,13 @@
 class Solution:
-    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-        # find the frequency of each number
-        num_frequency_map = {}
-        for num in nums:
-            num_frequency_map[num] = num_frequency_map.get(num, 0) + 1
-        top_k_elements = []
+    def topKFrequent(self, nums: list[int], k: int) -> list[int]:
+        if len(nums) == 1 or len(nums) == k:
+            return nums
 
-        # go through all numbers of the num_frequency_map
-        # and push them in the top_k_elements, which will have
-        # top k frequent numbers. If the heap size is more than k,
-        # we remove the smallest(top) number
-        for num, frequency in num_frequency_map.items():
-            heappush(top_k_elements, (frequency, num))
-            if len(top_k_elements) > k:
-                heappop(top_k_elements)
+        dic = {}
+        for i in nums:  # O(N) frequency counting without .count()
+            dic[i] = dic.get(i, 0) + 1
 
-        # create a list of top k numbers
-        top_numbers = []
-        while top_k_elements:
-            top_numbers.append(heappop(top_k_elements)[1])
+        # Sort the numbers (keys) based on their frequencies (values) in descending order
+        maxitems = sorted(dic.keys(), key=lambda x: dic[x], reverse=True)
 
-        return top_numbers
+        return maxitems[:k]
